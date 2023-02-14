@@ -27,7 +27,7 @@ function FrontPage() {
   return (
     <>
       <div style={box}>
-        <img src="src/assets/github-logo.png" style={logoStyle} alt="" />
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111425.png" style={logoStyle} alt="" />
         <h3>GitHub Profiler</h3>
         <div className="ui input focus">
           <input
