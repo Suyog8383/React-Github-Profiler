@@ -17,10 +17,9 @@ function FrontPage() {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    height: "400px",
-    width: "400px",
+    height: "350px",
+    width: "350px",
     border: "2px solid",
-    padding: "12px",
     borderRadius: "15px",
     backgroundColor: "white",
   };
