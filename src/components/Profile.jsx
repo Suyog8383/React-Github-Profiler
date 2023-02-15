@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import ErrorHandle from "./ErrorHandle";
 
 function Profile() {
   const { id } = useParams();
@@ -7,19 +8,21 @@ function Profile() {
   const [profiles, setProfiles] = useState([]);
   const [repos, setRepos] = useState([]);
   useEffect(() => {
-    if (!id) return;
+    if (!id) {
+      return;
+    } else {
+      fetch(`https://api.github.com/users/${id}`)
+        .then((data) => data.json())
+        .then((data) => {
+          setProfiles(data);
+        });
 
-    fetch(`https://api.github.com/users/${id}`)
-      .then((data) => data.json())
-      .then((data) => {
-        setProfiles(data);
-      });
-
-    fetch(`https://api.github.com/users/${id}/repos`)
-      .then((data) => data.json())
-      .then((data) => {
-        setRepos(data);
-      });
+      fetch(`https://api.github.com/users/${id}/repos`)
+        .then((data) => data.json())
+        .then((data) => {
+          setRepos(data);
+        });
+    }
   }, [id]);
 
   const styleLi = {
@@ -37,6 +40,13 @@ function Profile() {
     backgroundColor: "rgba(255, 255, 255, 0.8)",
     border: "1px solid rgba(0, 0, 0, 0.8)",
     padding: "20px",
+    fontSize: "30px",
+    textAlign: "center",
+  };
+  const styleGrid3 = {
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    border: "1px solid rgba(0, 0, 0, 0.8)",
+    padding: "38px 0",
     fontSize: "30px",
     textAlign: "center",
   };
@@ -58,9 +68,9 @@ function Profile() {
   return (
     <div>
       <div>
-        <h2 style={{ fontFamily: "Lato, sans-serif" }}>
+        <h3 style={{ fontFamily: "Lato, sans-serif", padding: " 10px 0" }}>
           Hey, {profiles.login}
-        </h2>
+        </h3>
         <div className="grid-container" style={headGrid}>
           <div className="grid-item" style={styleGrid2}>
             <img style={styleLi} src={profiles.avatar_url} alt="" />
@@ -74,23 +84,23 @@ function Profile() {
               </Link>
             </button>
           </div>
-          <div className="grid-item" style={styleGrid2}>
-            <div style={{ padding: "50px" }}>
-              <p>{profiles.bio}</p>
-              <hr />
-              <h4>
-                <Link to={`/followers/${id}`}>{profiles.followers} </Link>
-                Followers
-              </h4>
-              <h4>
-                <Link to={`/following/${id}`}>{profiles.following} </Link>
-                Following
-              </h4>
-            </div>
+          <div className="grid-item" style={styleGrid3}>
+            <p>{profiles.bio}</p>
+            <hr />
+            <h5>
+              <Link to={`/followers/${id}`}>{profiles.followers} </Link>
+              Followers
+            </h5>
+            <h5>
+              <Link to={`/following/${id}`}>{profiles.following} </Link>
+              Following
+            </h5>
           </div>
         </div>
 
-        <h2 style={{ fontFamily: "Lato, sans-serif" }}>Repository List</h2>
+        <h3 style={{ fontFamily: "Lato, sans-serif", padding: " 10px 0" }}>
+          Repository List
+        </h3>
         <div className="grid-container" style={styleGrid}>
           {repos.map((item, index) => {
             return (
@@ -105,7 +115,7 @@ function Profile() {
                   style={{ color: "red", textDecoration: "none" }}
                   to={`/reposDetail/${id}/${item.name}`}
                 >
-                  <p>{item.name}</p>
+                  <p style={{ fontSize: "smaller" }}>{item.name}</p>
                 </Link>
               </div>
             );
